@@ -52,12 +52,36 @@ export const useCartStore = create(
       },
       // New action to sync cart with database
       syncCart(dbItems: any[]) {
-        // We map DB items back to the CartProduct type
-        // This assumes we'll fetch product details from the DB in the actual API
+        const localProducts = get().products;
+
+        // Merge local guest cart with DB cart
+        const mergedProductsMap = new Map();
+
+        // Add DB items first
+        dbItems.forEach(item => {
+          mergedProductsMap.set(item.id, item);
+        });
+
+        // Merge local items
+        localProducts.forEach(item => {
+          if (mergedProductsMap.has(item.id)) {
+            const dbItem = mergedProductsMap.get(item.id);
+            mergedProductsMap.set(item.id, {
+              ...item,
+              quantity: (dbItem as any).quantity + item.quantity,
+              price: (dbItem as any).price + item.price,
+            });
+          } else {
+            mergedProductsMap.set(item.id, item);
+          }
+        });
+
+        const finalProducts = Array.from(mergedProductsMap.values());
+
         set({
-          products: dbItems,
-          totalItems: dbItems.reduce((acc, item) => acc + item.quantity, 0),
-          totalPrice: dbItems.reduce((acc, item) => acc + item.price, 0),
+          products: finalProducts,
+          totalItems: finalProducts.reduce((acc, item) => acc + item.quantity, 0),
+          totalPrice: finalProducts.reduce((acc, item) => acc + item.price, 0),
         });
       },
     }),

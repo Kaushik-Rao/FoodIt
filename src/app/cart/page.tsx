@@ -15,6 +15,11 @@ const CartPage = () => {
   }, []);
 
   const handleCheckout = async () => {
+    if (products.length === 0) {
+      toast.error("Your cart is empty!");
+      return;
+    }
+
     if (!session) {
       router.push("/login");
     } else {
@@ -53,7 +58,7 @@ const CartPage = () => {
               </h1>
               <span>{item.optionTitle}</span>
             </div>
-            <h2 className="font-bold">${item.price}</h2>
+            <h2 className="font-bold">₹{item.price}</h2>
             <span
               className="cursor-pointer"
               onClick={() => removeFromCart(item)}
@@ -69,7 +74,7 @@ const CartPage = () => {
         </div>
         <div className="flex justify-between">
           <span className="">Service Cost</span>
-          <span className="">$0.00</span>
+          <span className="">₹0.00</span>
         </div>
         <div className="flex justify-between">
           <span className="">Delivery Cost</span>

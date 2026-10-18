@@ -27,11 +27,13 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <QueryProvider>
-            <div>
+            <div className="min-h-screen flex flex-col">
               <Notification />
               <Navbar />
               <CartSyncProvider />
-              {children}
+              <main className="flex-1">
+                {children}
+              </main>
               <Footer />
               <ToastContainer
                 position="bottom-right"

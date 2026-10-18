@@ -70,7 +70,12 @@ const CartDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
             <span className="text-2xl font-bold text-red-600">₹{totalPrice.toFixed(1)}</span>
           </div>
           <button
-            className="w-full bg-red-500 text-white py-4 rounded-xl font-bold uppercase hover:bg-red-600 transition-colors shadow-lg shadow-red-200"
+            className={`w-full py-4 rounded-xl font-bold uppercase transition-colors shadow-lg ${
+              products.length === 0
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-red-500 text-white hover:bg-red-600 shadow-red-200"
+            }`}
+            disabled={products.length === 0}
             onClick={() => {
               onClose();
               window.location.href = "/cart";
