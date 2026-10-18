@@ -1,6 +1,8 @@
 import { getAuthSession } from "@/utils/auth";
 import { prisma } from "@/utils/connect";
 import { NextRequest, NextResponse } from "next/server";
+import { OrderSchema } from "@/utils/validation";
+import { ZodError } from "zod";
 
 // FETCH ALL ORDERS
 export const GET = async (req: NextRequest) => {
@@ -40,11 +42,21 @@ export const POST = async (req: NextRequest) => {
   if (session) {
     try {
       const body = await req.json();
+
+      // Validate input using Zod
+      const validatedData = OrderSchema.parse(body);
+
       const order = await prisma.order.create({
-        data: body,
+        data: validatedData,
       });
       return new NextResponse(JSON.stringify(order), { status: 201 });
     } catch (err) {
+      if (err instanceof ZodError) {
+        return new NextResponse(
+          JSON.stringify({ message: "Validation failed", errors: err.errors }),
+          { status: 400 }
+        );
+      }
       console.log(err);
       return new NextResponse(
         JSON.stringify({ message: "Something went wrong!" }),

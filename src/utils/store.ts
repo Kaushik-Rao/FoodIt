@@ -50,6 +50,16 @@ export const useCartStore = create(
           totalPrice: state.totalPrice - item.price,
         }));
       },
+      // New action to sync cart with database
+      syncCart(dbItems: any[]) {
+        // We map DB items back to the CartProduct type
+        // This assumes we'll fetch product details from the DB in the actual API
+        set({
+          products: dbItems,
+          totalItems: dbItems.reduce((acc, item) => acc + item.quantity, 0),
+          totalPrice: dbItems.reduce((acc, item) => acc + item.price, 0),
+        });
+      },
     }),
     { name: "cart", skipHydration: true }
   )

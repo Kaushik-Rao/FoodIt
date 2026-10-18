@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/components/AuthProvider";
 import QueryProvider from "@/components/QueryProvider";
+import CartSyncProvider from "@/components/CartSyncProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -29,6 +30,7 @@ export default function RootLayout({
             <div>
               <Notification />
               <Navbar />
+              <CartSyncProvider />
               {children}
               <Footer />
               <ToastContainer

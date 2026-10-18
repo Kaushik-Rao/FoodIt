@@ -47,6 +47,16 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Order         Order[]
+  cart          CartItem[]
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  productId String
+  quantity  Int      @default(1)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
 }
 
 model VerificationToken {

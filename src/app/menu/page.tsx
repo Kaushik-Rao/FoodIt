@@ -1,17 +1,16 @@
 import { MenuType } from "@/types/types";
 import Link from "next/link";
 import React from "react";
+import { prisma } from "@/utils/connect";
 
 const getData = async () => {
-  const res = await fetch("http://localhost:3000/api/categories", {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed!");
+  try {
+    const categories = await prisma.category.findMany();
+    return categories as MenuType;
+  } catch (err) {
+    console.error("Error fetching categories:", err);
+    throw new Error("Failed to load menu");
   }
-
-  return res.json();
 };
 
 const MenuPage = async () => {

@@ -1,7 +1,7 @@
 import { prisma } from "@/utils/connect";
 import { NextRequest, NextResponse } from "next/server";
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripeClient = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(
   request: NextRequest,
@@ -16,9 +16,11 @@ export async function POST(
   });
 
   if (order) {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: 100 * 100,
-      currency: "usd",
+    const amount = Number(order.price) * 100; // Server-side price calculation
+
+    const paymentIntent = await stripeClient.paymentIntents.create({
+      amount: amount,
+      currency: "inr",
       automatic_payment_methods: {
         enabled: true,
       },
@@ -37,7 +39,7 @@ export async function POST(
     );
   }
   return new NextResponse(
-    JSON.stringify({ message:"Order not found!" }),
+    JSON.stringify({ message: "Order not found!" }),
     { status: 404 }
   );
 }
