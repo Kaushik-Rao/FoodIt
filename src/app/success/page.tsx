@@ -1,9 +1,9 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import ConfettiExplosion from "react-confetti-explosion";
 
-const SuccessPage = () => {
+const SuccessContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const payment_intent = searchParams.get("payment_intent");
@@ -35,6 +35,20 @@ const SuccessPage = () => {
         <ConfettiExplosion className="absolute m-auto" />
       </div>
     </>
+  );
+};
+
+const SuccessPage = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[calc(100vh-6rem)] md:min-h-[calc(100vh-15rem)] flex items-center justify-center text-center text-2xl text-green-700">
+          <p className="max-w-[600px]">Payment successful.</p>
+        </div>
+      }
+    >
+      <SuccessContent />
+    </Suspense>
   );
 };
 
