@@ -4,13 +4,17 @@ import { useCartStore } from "@/utils/store";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CartDrawer from "./CartDrawer";
 
 const CartIcon = () => {
   const { data: session } = useSession();
   const { totalItems } = useCartStore();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    useCartStore.persist.rehydrate();
+  }, []);
 
   return (
     <div className="flex items-center gap-4">

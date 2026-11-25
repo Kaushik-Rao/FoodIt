@@ -3,7 +3,9 @@
 import React from "react";
 import Countdown from "react-countdown";
 
-const endingDate = new Date("2024-07-25");
+// Set to 30 days from now for demo purposes
+const endingDate = new Date();
+endingDate.setDate(endingDate.getDate() + 30);
 
 const CountDown = () => {
   return (

@@ -12,9 +12,10 @@ export const PUT = async (
 
   try {
     const body = await req.json();
+    const status = body?.status || body; // Support both { status: "..." } and "..."
 
     // Validate status using Zod
-    const validatedStatus = OrderStatusSchema.parse(body);
+    const validatedStatus = OrderStatusSchema.parse({ status: status }).status;
 
     await prisma.order.update({
       where: {

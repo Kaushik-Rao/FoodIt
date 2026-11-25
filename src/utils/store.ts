@@ -20,15 +20,21 @@ export const useCartStore = create(
           (product) => product.id === item.id
         );
 
+        // item.price is the total price for the quantity being added (unitPrice * quantity)
+        // We need to calculate the unit price from the incoming item
+        const unitPrice = item.price / item.quantity;
+
         if (productInState) {
+          const newQuantity = item.quantity + productInState.quantity;
+          const newTotalPrice = unitPrice * newQuantity;
           const updatedProducts = products.map((product) =>
             product.id === productInState.id
               ? {
-                  ...item,
-                  quantity: item.quantity + product.quantity,
-                  price: item.price + product.price,
+                  ...product,
+                  quantity: newQuantity,
+                  price: newTotalPrice,
                 }
-              : item
+              : product
           );
           set((state) => ({
             products: updatedProducts,

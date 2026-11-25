@@ -3,17 +3,10 @@ import Price from "@/components/Price";
 import { ProductType } from "@/types/types";
 import Image from "next/image";
 import React from "react";
+import { fetchApi } from "@/utils/api";
 
 const getData = async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/products/${id}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed!");
-  }
-
-  return res.json();
+  return fetchApi(`/api/products/${id}`);
 };
 
 const SingleProductPage = async ({ params }: { params: { id: string } }) => {

@@ -1,21 +1,14 @@
 import { ProductType } from "@/types/types";
 import Image from "next/image";
 import React from "react";
-import { prisma } from "@/utils/connect";
+import { fetchApi } from "@/utils/api";
 
 const getData = async () => {
-  try {
-    const products = await prisma.product.findMany();
-    return products as ProductType[];
-  } catch (err) {
-    console.error("Error fetching products:", err);
-    throw new Error("Failed to load products");
-  }
+  return fetchApi("/api/products");
 };
 
 const Featured = async () => {
-
-  const featuredProducts: ProductType[] = await getData()
+  const featuredProducts: ProductType[] = await getData();
 
   return (
     <div className="w-screen overflow-x-scroll text-red-500">

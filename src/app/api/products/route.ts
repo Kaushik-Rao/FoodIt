@@ -1,12 +1,17 @@
 
 import { prisma } from "@/utils/connect";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 
-//FETCH ALL PRODUCTS
-export const GET = async () => {
+//FETCH ALL PRODUCTS (with optional category filter)
+export const GET = async (req: NextRequest) => {
   try {
-    const products = await prisma.product.findMany();
+    const { searchParams } = new URL(req.url);
+    const cat = searchParams.get("cat");
+
+    const where = cat ? { catSlug: cat } : {};
+
+    const products = await prisma.product.findMany({ where });
     return new NextResponse(JSON.stringify(products), { status: 200 });
   } catch (err) {
     console.log(err);

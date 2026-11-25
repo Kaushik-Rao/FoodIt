@@ -1,0 +1,3 @@
+- warn Port 3000 is in use, trying 3001 instead.
+- ready started server on 0.0.0.0:3001, url: http://localhost:3001
+- [36minfo[39m Loaded env from C:\Users\blike\OneDrive\Desktop\Claude\FoodIt\.env
