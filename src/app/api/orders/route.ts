@@ -53,7 +53,7 @@ export const POST = async (req: NextRequest) => {
     } catch (err) {
       if (err instanceof ZodError) {
         return new NextResponse(
-          JSON.stringify({ message: "Validation failed", errors: err.errors }),
+          JSON.stringify({ message: "Validation failed", errors: err.issues }),
           { status: 400 }
         );
       }

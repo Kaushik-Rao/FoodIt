@@ -6,7 +6,7 @@ const ContactPage = () => {
     <div className="p-4 lg:px-20 xl:px-40 min-h-screen flex flex-col items-center justify-center text-center">
       <h1 className="text-4xl font-bold my-8 text-red-500 uppercase">Contact Us</h1>
       <p className="text-gray-600 max-w-2xl mb-8">
-        Have questions or feedback? We'd love to hear from you.
+        Have questions or feedback? We&apos;d love to hear from you.
         Reach out to us via phone or email, and our team will get back to you as soon as possible.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">

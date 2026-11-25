@@ -15,7 +15,7 @@ export const PUT = async (
     const status = body?.status || body; // Support both { status: "..." } and "..."
 
     // Validate status using Zod
-    const validatedStatus = OrderStatusSchema.parse({ status: status }).status;
+    const { status: validatedStatus } = OrderStatusSchema.parse({ status });
 
     await prisma.order.update({
       where: {
@@ -30,7 +30,7 @@ export const PUT = async (
   } catch (err) {
     if (err instanceof ZodError) {
       return new NextResponse(
-        JSON.stringify({ message: "Invalid order status", errors: err.errors }),
+        JSON.stringify({ message: "Invalid order status", errors: err.issues }),
         { status: 400 }
       );
     }

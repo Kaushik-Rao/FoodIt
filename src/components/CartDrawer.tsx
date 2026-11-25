@@ -44,7 +44,11 @@ const CartDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
             products.map((item) => (
               <div key={item.id} className="flex gap-4 p-3 ring-1 ring-gray-100 rounded-lg">
                 <div className="relative w-20 h-20">
-                  <Image src={item.img} alt={item.title} fill className="object-cover rounded-md" />
+                  {item.img ? (
+                    <Image src={item.img} alt={item.title} fill className="object-cover rounded-md" />
+                  ) : (
+                    <div className="w-full h-full bg-gray-100 rounded-md" />
+                  )}
                 </div>
                 <div className="flex-1">
                   <h3 className="font-medium text-gray-800">{item.title}</h3>

@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     create: {
       productId,
       quantity,
-      userId: (await prisma.user.findUnique({ where: { email: token.email } }))?.id || "",
+      userId: (await prisma.user.findUnique({ where: { email: token.email ?? undefined } }))?.id || "",
     },
   });
 
