@@ -187,7 +187,41 @@ price: item.price + product.price,  // Wrong: adds total to total
 
 ## ✅ FIXED (Track Progress Here)
 
-*None yet - Phase 3 will populate this section*
+Fixed while deploying the app to Vercel (production: https://kaushik-food-it.vercel.app):
+
+- **#1 — Hardcoded `localhost:3000` API URLs**: server components now use the shared
+  `src/utils/api.ts` helper, which builds the base URL from the request `host` header.
+- **#2 — Products API ignored the `cat` filter**: `src/app/api/products/route.ts` now
+  parses `?cat=` and filters on `catSlug`.
+- **#3 — Create intent used a hardcoded amount**: the PaymentIntent amount is now
+  `order.price * 100` from the database.
+- **#4 — Stripe `return_url` hardcoded to localhost**: the checkout flow uses Stripe
+  Payment Elements with a client-side redirect, so no `return_url` is sent.
+- **#5 — Cart store `addToCart` price calculation**: the store now derives the unit
+  price (`item.price / item.quantity`) before recomputing the line total.
+- **#7 — Order status update had no validation**: `src/utils/validation.ts` validates
+  the status against `ORDER_STATUSES` before the database write.
+- **#8 — Facebook OAuth button non-functional**: the unused Facebook button was removed.
+- **#10 — Build failed when the database was unreachable**: `prisma generate` was moved
+  into the build script and the app fetches data at request time, so builds no longer
+  need a live database.
+- **#13 — No `.env.example`**: added, with production notes for `NEXTAUTH_URL` and the
+  Google OAuth redirect URIs.
+- **#14 — README was the default template**: replaced with project documentation,
+  including the live URL and the real Neon/Vercel deployment steps.
+- **#15 — Netlify config present while deploying to Vercel**: `netlify.toml` and
+  `public/_redirects` are gone.
+
+Also fixed during the deployment: `outputFileTracing: false` in `next.config.js` was
+stripping server files from the Vercel bundle (runtime 500s), `zod` v4 changed
+`err.errors` to `err.issues`, and the `/success` page needed a `Suspense` boundary
+around `useSearchParams()` to prerender.
+
+### Still open
+
+- **#6 — Missing `/add` admin route**: `src/components/CartIcon.tsx` still links to
+  `/add`, which does not exist.
+- **#9, #11, #12, #16–#20**: still outstanding.
 
 ---
 
@@ -206,12 +240,16 @@ price: item.price + product.price,  // Wrong: adds total to total
 
 ## Deployment Checklist
 
-- [ ] Fix all BLOCKER issues
-- [ ] Fix all MAJOR issues
-- [ ] Create `.env.example`
-- [ ] Update README
-- [ ] Run `npm run build` successfully
-- [ ] Run `npm run start` and verify production build
-- [ ] Configure Vercel environment variables
-- [ ] Deploy preview and test
-- [ ] Deploy to production
+- [x] Fix all BLOCKER issues
+- [x] Fix all MAJOR issues
+- [x] Create `.env.example`
+- [x] Update README
+- [x] Run `npm run build` successfully
+- [x] Run `npm run start` and verify production build
+- [x] Configure Vercel environment variables
+- [x] Deploy preview and test
+- [x] Deploy to production — https://kaushik-food-it.vercel.app
+
+Production stack: Vercel (Next.js 13.5) + Neon PostgreSQL + Stripe test keys.
+`DATABASE_URL` for Prisma must drop Neon's `channel_binding` parameter and add
+`pgbouncer=true`; see the README for the exact format.
