@@ -148,4 +148,4 @@ MIT License - feel free to use for your portfolio!
 
 ## Live Demo
 
-[Add your Vercel deployment URL here]
+https://food-it-kaushiks-projects-9e6b9e3c.vercel.app/
